@@ -21,7 +21,11 @@ dat2json tool
 
 Decode some of Factorio's .dat files into pretty formatted JSON.  The
 decoding is a work in progress and the meaning of fields ending with an
-underscore is not know.
+underscore is not know.  For example:
+
+.. code ::
+
+    > py -m hornwitser.factorio_tools dat2json -i script.dat -o script.json
 
 Takes 3 options, ``--input`` for setting the input .dat file,
 ``--output`` for setting the output file, both of which accept ``-`` for
