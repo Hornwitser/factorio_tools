@@ -65,7 +65,7 @@ do the following steps:
 
     .. code ::
 
-        > py -m hornwitser.factorio_tools  multi spawn
+        > py -m hornwitser.factorio_tools multi spawn
 
     This should launch Factorio in windowed mode with music and updates
     disabled.  You should consider changing the following settings in
