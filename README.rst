@@ -16,6 +16,23 @@ Factorio Tools is available on PyPi, you can install/update it using the
     > py -m pip install --user --upgrade hornwitser.factorio_tools
 
 
+dat2json tool
+-------------
+
+Decode some of Factorio's .dat files into pretty formatted JSON.  The
+decoding is a work in progress and the meaning of fields ending with an
+underscore is not know.
+
+Takes 3 options, ``--input`` for setting the input .dat file,
+``--output`` for setting the output file, both of which accept ``-`` for
+stdin/stdout (the default), and ``--input-format`` which is needed in
+case the format can not be deduced from name of the file.  The format
+should be the name Factorio gives the .dat file without the .dat suffix.
+
+Currently acheivements, mod-dettings and script data can be decoded
+using this tool.
+
+
 multi tool
 ----------
 

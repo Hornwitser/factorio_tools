@@ -41,5 +41,8 @@ setuptools.setup(
         "Topic :: Utilities",
     ],
     python_requires='>=3.7',
+    install_requires=[
+        "construct>=2.10.53",
+    ],
     zip_safe=True,
 )

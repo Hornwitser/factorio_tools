@@ -17,6 +17,7 @@
 import argparse
 
 from . import multi
+from . import parse
 
 
 def main():
@@ -27,9 +28,23 @@ def main():
     parser.set_defaults(func=lambda args: parser.print_help())
     subparsers = parser.add_subparsers(help="Tool to run")
 
+    dat2json_parser(subparsers)
     multi_parser(subparsers)
     args = parser.parse_args()
     args.func(args)
+
+def dat2json_parser(subparsers):
+    parser = subparsers.add_parser(
+        'dat2json', help="Convert Factorio dat files to json",
+        description=
+            "Converts the binary formats used in Factorio to json.  "
+            "The format options are only necessary if the format cannot be deduced from filename."
+    )
+
+    parser.add_argument('--input', '-i', default='-', type=argparse.FileType('rb'), help="input file to convert")
+    parser.add_argument('--input-format', help="format of input file")
+    parser.add_argument('--output', '-o', default='-', type=argparse.FileType('w'), help="file to output to")
+    parser.set_defaults(func=parse.dat2json)
 
 def multi_parser(subparsers):
     parser = subparsers.add_parser('multi', help="Handle multiple Factorio clients")
