@@ -22,7 +22,7 @@ def read_file(path):
 
 setuptools.setup(
     name="hornwitser.factorio_tools",
-    version="0.0.1",
+    version="0.0.2",
     author="Hornwitser",
     author_email="github@hornwitser.no",
     description="Tools for Debugging Factorio",

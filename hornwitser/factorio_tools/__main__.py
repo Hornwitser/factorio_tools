@@ -16,6 +16,7 @@
 
 import argparse
 
+from . import desync
 from . import multi
 from . import parse
 
@@ -28,6 +29,7 @@ def main():
     parser.set_defaults(func=lambda args: parser.print_help())
     subparsers = parser.add_subparsers(help="Tool to run")
 
+    desync_parser(subparsers)
     dat2json_parser(subparsers)
     multi_parser(subparsers)
     args = parser.parse_args()
@@ -45,6 +47,16 @@ def dat2json_parser(subparsers):
     parser.add_argument('--input-format', help="format of input file")
     parser.add_argument('--output', '-o', default='-', type=argparse.FileType('w'), help="file to output to")
     parser.set_defaults(func=parse.dat2json)
+
+def desync_parser(subparsers):
+    parser = subparsers.add_parser(
+        'desync', help="Analyze desync reports",
+        description=
+            "Automated parsing and diffing of desync reports from Factorio"
+    )
+
+    parser.add_argument('path', help="Path to desync report, will be extracted if in the .zip file")
+    parser.set_defaults(func=desync.analyze)
 
 def multi_parser(subparsers):
     parser = subparsers.add_parser('multi', help="Handle multiple Factorio clients")

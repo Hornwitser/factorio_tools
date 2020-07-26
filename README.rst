@@ -16,6 +16,24 @@ Factorio Tools is available on PyPi, you can install/update it using the
     > py -m pip install --user --upgrade hornwitser.factorio_tools
 
 
+desync tool
+-----------
+
+Automatically parse and diff Factorio desync reports, takes a single
+parameter ``path`` to the desync report to analyze.  If the report is in
+a .zip file it will be exacted first.  For example:
+
+.. code ::
+
+    > py -m hornwitser.factorio_tools desync desync-report-2020-07-01_10-00-00.zip
+
+The output shows differences found in the script.dat, level-heuristics
+and level_with_tags files between the reference and desynced level
+contained in the desync report.
+
+This tool is rather slow and may take a long time to run.
+
+
 dat2json tool
 -------------
 
