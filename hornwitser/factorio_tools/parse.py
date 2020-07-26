@@ -80,12 +80,12 @@ object_types[0x02] = Struct(
 object_types[0x03] = Struct(
     "red_" / Int8ul,
     "blue_" / Int8ul,
-    "value" / PascalString(Int8ul, "utf8"),
+    "value" / PascalString(Int8ul, "latin-1"),
 )
 
 KeyValuePair = Struct(
     "bloom_" / Int8ul,
-    "key" / PascalString(Int8ul, "utf8"),
+    "key" / PascalString(Int8ul, "latin-1"),
     "value" / SerializedObject,
 )
 
@@ -107,8 +107,8 @@ OldScriptDat = Struct(
     "_type" / Computed(lambda this: "script"),
     "version" / Version,
     "data" / PrefixedArray(Int32ul, Struct(
-        "name" / PascalString(Int8ul, "utf8"),
-        "dump" / PascalString(FactorioInt32ul, "utf8"),
+        "name" / PascalString(Int8ul, "latin-1"),
+        "dump" / PascalString(FactorioInt32ul, "latin-1"),
         "tabletop_" / Int8ul
     )),
     Terminated,
@@ -129,7 +129,7 @@ script_object_types[0x02] = Computed(lambda this: True)
 script_object_types[0x03] = Float64l
 
 # string
-script_object_types[0x04] = PascalString(FactorioInt32ul, "utf8")
+script_object_types[0x04] = PascalString(FactorioInt32ul, "latin-1")
 
 ScriptKeyValuePair = Struct(
     "key" / ScriptSerializedObject,
@@ -146,7 +146,7 @@ ScriptDat = Struct(
     "_type" / Computed(lambda this: "script"),
     "version" / Version,
     "data" / PrefixedArray(Int32ul, Struct(
-        "name" / PascalString(Int8ul, "utf8"),
+        "name" / PascalString(Int8ul, "latin-1"),
         "dump" / Prefixed(FactorioInt32ul, Struct(
             "version" / Version,
             "data" / ScriptSerializedObject,
@@ -164,17 +164,17 @@ ModSettingsDat = Struct(
 )
 
 IdEntry = Struct(
-    "type" / PascalString(Int8ul, "utf8"),
+    "type" / PascalString(Int8ul, "latin-1"),
     "names" / PrefixedArray(Int16ul, Struct(
-        "name" / PascalString(Int8ul, "utf8"),
+        "name" / PascalString(Int8ul, "latin-1"),
         "id" / Int16ul,
     )),
 )
 
 TileIdEntry = Struct(
-    "type" / PascalString(Int8ul, "utf8"),
+    "type" / PascalString(Int8ul, "latin-1"),
     "names" / PrefixedArray(Int8ul, Struct(
-        "name" / PascalString(Int8ul, "utf8"),
+        "name" / PascalString(Int8ul, "latin-1"),
         "id" / Int8ul,
     )),
 )
@@ -223,8 +223,8 @@ AchievementDat = Struct(
 )
 
 AchievementModdedEntry = Struct(
-    "type" / PascalString(Int8ul, "utf8"),
-    "name" / PascalString(Int8ul, "utf8"),
+    "type" / PascalString(Int8ul, "latin-1"),
+    "name" / PascalString(Int8ul, "latin-1"),
     "data" / Switch(this.type, achievement_types),
 )
 
@@ -239,15 +239,15 @@ AchievementsModdedDat = Struct(
 )
 
 MigrationEntry = Struct(
-    "mod" / PascalString(Int8ul, "utf8"),
-    "migration" / PascalString(Int8ul, "utf8"),
+    "mod" / PascalString(Int8ul, "latin-1"),
+    "migration" / PascalString(Int8ul, "latin-1"),
 )
 
 blueprint_types = {}
 
 Blueprint = Struct(
     "bp_type" / Int16ul,
-    "bp_name" / PascalString(Int8ul, "utf8"),
+    "bp_name" / PascalString(Int8ul, "latin-1"),
     "content" / Switch(this.bp_type, blueprint_types)
 )
 
