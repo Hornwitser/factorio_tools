@@ -79,6 +79,7 @@ def multi_parser(subparsers):
     parser_spawn.add_argument('--path', default="base", help="Path to write dir to spawn from")
     parser_spawn.add_argument('--factorio', help="Path to Factorio executable")
     parser_spawn.add_argument('--args', '-a', help="Additional args to pass to Factorio")
+    parser_spawn.add_argument('--title', help="Set window title to given text")
     parser_spawn.set_defaults(func=multi.spawn)
 
     parser_spawn_multi = subparsers.add_parser('spawn-multi', help="Spawn multiple clients")
@@ -90,6 +91,7 @@ def multi_parser(subparsers):
     parser_spawn_multi.add_argument('--prefix', default="instance", help="Prefix to name of instance dirs")
     parser_spawn_multi.add_argument('--factorio', help="Path to Factorio executable")
     parser_spawn_multi.add_argument('--args', '-a', help="Additional args to pass to Factorio")
+    parser_spawn_multi.add_argument('--title', help="Set window title to given text")
     parser_spawn_multi.set_defaults(func=multi.spawn_multi)
 
     parser_click = subparsers.add_parser('click', help="Click coordinate on all clients")

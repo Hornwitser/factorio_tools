@@ -127,7 +127,13 @@ def spawn_one(write_dir, args):
         f'{disown} "{factorio} --config {cfg_path}{extra_args}"',
         capture_output=True, text=True
     )
-    return int(spawn_result.stdout)
+    pid = int(spawn_result.stdout)
+    if args.title:
+        hWnd = find_main_window(pid, 20)
+        if hWnd:
+            set_title(hWnd, args.title)
+
+    return pid
 
 
 # --- Windows API interactions -----------------------------------------
@@ -236,6 +242,8 @@ def find_main_window_callback(hWnd, p_void):
 def is_main_window(hWnd):
     return user32.GetWindow(hWnd, 4) == 0 and user32.IsWindowVisible(hWnd)
 
+def set_title(hWnd, text):
+    user32.SetWindowTextW(hWnd, text)
 
 FindWindowData = collections.namedtuple('FindWindowData', 'name hWnds')
 
