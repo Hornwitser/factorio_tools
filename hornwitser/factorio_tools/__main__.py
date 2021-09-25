@@ -15,9 +15,11 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import argparse
+import sys
 
 from . import desync
-from . import multi
+if sys.platform == "win32":
+    from . import multi
 from . import parse
 
 
@@ -31,7 +33,8 @@ def main():
 
     desync_parser(subparsers)
     dat2json_parser(subparsers)
-    multi_parser(subparsers)
+    if sys.platform == "win32":
+        multi_parser(subparsers)
     args = parser.parse_args()
     args.func(args)
 

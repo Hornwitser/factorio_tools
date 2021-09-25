@@ -58,6 +58,8 @@ using this tool.
 multi tool
 ----------
 
+.. note ::  This tool is only available on Windows.
+
 Automate spawning, arranging, and interacting with many Factorio clients
 at the same time.  It works by arranging the client windows on a grid
 using the Windows API, and has a mode that clicks a specific location
