@@ -55,6 +55,31 @@ Currently acheivements, mod-dettings and script data can be decoded
 using this tool.
 
 
+ping tool
+---------
+
+Ping Factorio servers via UDP.  Takes a hostname and an optional port
+and sends Ping messages to the given address and listens for PingReply
+responses.  For example:
+
+.. code ::
+
+    > py -m hornwitser.factorio_tools ping example.com --count 4
+    PingReply from 203.0.113.51:34197: seq=0 time=43.0102ms
+    PingReply from 203.0.113.51:34197: seq=1 time=42.6973ms
+    PingReply from 203.0.113.51:34197: seq=2 time=42.6778ms
+    PingReply from 203.0.113.51:34197: seq=3 time=42.6496ms
+
+    --- example.com:34197 ping statistics ---
+    4 packets sent, 4 received, 0.0% loss, time 3537.53ms
+    rtt min/avg/max/mdev 42.65/42.76/43.01/0.15
+
+Will keep pinging until interrupted by Ctrl+C if `--count` is not
+provided.  The `--punch` option will relay a Nat punch requests through
+the Factorio matchmaking servers in order to attempt to traverse
+through Nat and/or firewalls.  See `--help` for all options.
+
+
 multi tool
 ----------
 

@@ -21,6 +21,7 @@ from . import desync
 if sys.platform == "win32":
     from . import multi
 from . import parse
+from . import ping
 
 
 def main():
@@ -33,6 +34,7 @@ def main():
 
     desync_parser(subparsers)
     dat2json_parser(subparsers)
+    ping_parser(subparsers)
     if sys.platform == "win32":
         multi_parser(subparsers)
     args = parser.parse_args()
@@ -60,6 +62,22 @@ def desync_parser(subparsers):
 
     parser.add_argument('path', help="Path to desync report, will be extracted if in the .zip file")
     parser.set_defaults(func=desync.analyze)
+
+def ping_parser(subparsers):
+    parser = subparsers.add_parser(
+        'ping', help="Ping Factorio server",
+        description="Pings a Factorio server and display statistics."
+    )
+
+    parser.add_argument('--count', '-c', type=int, help="Stop after COUNT pings sent")
+    parser.add_argument('--interval', '-i', type=float, default=1.0, help="Interval to send pings at in seconds")
+    parser.add_argument('--ipv4', '-4', action='store_true', help="Use IPv4")
+    parser.add_argument('--ipv6', '-6', action='store_true', help="Use IPv6")
+    parser.add_argument('--punch', '-p', action='store_true', help="Send NAT punch request to server")
+    parser.add_argument('--quiet', '-q', action='store_true', help="Suppress ping reply output")
+    parser.add_argument('target', help="IP of server to ping")
+    parser.add_argument('port', nargs='?', type=int, default=34197, help="Port of server to ping")
+    parser.set_defaults(func=ping.ping)
 
 def multi_parser(subparsers):
     parser = subparsers.add_parser('multi', help="Handle multiple Factorio clients")
