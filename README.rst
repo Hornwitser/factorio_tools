@@ -74,10 +74,10 @@ responses.  For example:
     4 packets sent, 4 received, 0.0% loss, time 3537.53ms
     rtt min/avg/max/mdev 42.65/42.76/43.01/0.15
 
-Will keep pinging until interrupted by Ctrl+C if `--count` is not
-provided.  The `--punch` option will relay a Nat punch requests through
-the Factorio matchmaking servers in order to attempt to traverse
-through Nat and/or firewalls.  See `--help` for all options.
+Will keep pinging until interrupted by Ctrl+C if ``--count`` is not
+provided.  The ``--punch`` option will relay a Nat punch requests
+through the Factorio matchmaking servers in order to attempt to traverse
+through Nat and/or firewalls.  See ``--help`` for all options.
 
 
 multi tool
