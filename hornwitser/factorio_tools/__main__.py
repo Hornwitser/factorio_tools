@@ -106,6 +106,7 @@ def multi_parser(subparsers):
     parser_spawn_multi = subparsers.add_parser('spawn-multi', help="Spawn multiple clients")
     parser_spawn_multi.add_argument('--count', '-c', type=int, default=1, help="Clients to spawn")
     parser_spawn_multi.add_argument('--delay', '-d', type=float, default=2.0, help="Deleay between spawns")
+    parser_spawn_multi.add_argument('--monitor', '-m', type=int, default=None, help="Monitor to move window to")
     parser_spawn_multi.add_argument('--rows', '-R', type=int, default=4, help="Positioning rows")
     parser_spawn_multi.add_argument('--cols', '-C', type=int, default=5, help="Positioning columns")
     parser_spawn_multi.add_argument('--instance-dirs', default="", help="Location of instance dirs")

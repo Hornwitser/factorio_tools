@@ -118,7 +118,7 @@ def spawn_instance(instance_index, args):
         instance_index += 1
 
     pid = spawn_one(write_dir, args)
-    move_window(pid, instance_index, args.rows, args.cols)
+    move_window(pid, instance_index, args.monitor, args.rows, args.cols)
     return instance_index + 1
 
 def spawn_one(write_dir, args):
@@ -146,6 +146,10 @@ BOOL = ctypes.c_long
 ULONG = ctypes.c_ulong
 LONG = ctypes.c_long
 UINT = ctypes.c_uint
+
+HANDLE = ctypes.c_void_p
+HDC = HANDLE
+HMONITOR = HANDLE
 
 user32 = ctypes.windll.user32
 
@@ -203,16 +207,33 @@ class INPUT(ctypes.Structure):
         ('type', DWORD),
         ('ii', INPUT_I),
     ]
+
+MONITOR_DEFAULTTONULL = 0x0
 MONITOR_DEFAULTTOPRIMARY = 0x1
 
-def get_monitor_work_area(hWnd):
-    hMonitor = user32.MonitorFromWindow(hWnd, MONITOR_DEFAULTTOPRIMARY)
+MONITORENUMPROC = ctypes.WINFUNCTYPE(BOOL, HMONITOR, HDC, ctypes.POINTER(RECT), ctypes.c_void_p)
+
+def get_monitor_handle(monitor):
+    callback = MONITORENUMPROC(get_monitor_handle_callback)
+    monitors = []
+    user32.EnumDisplayMonitors(None, None, callback, ctypes.byref(ctypes.py_object(monitors)))
+    clamped = max(1, min(len(monitors), monitor))
+    if clamped != monitor:
+        print(f"Warning: monitor index out of range [1-{len(monitors)}]")
+    return monitors[clamped-1]
+
+def get_monitor_handle_callback(hMonitor, hdc, p_rect, p_void):
+    monitors = ctypes.cast(p_void, ctypes.POINTER(ctypes.py_object))[0]
+    monitors.append(hMonitor)
+    return True
+
+def get_monitor_info(hMonitor):
     info = MONITORINFO(ctypes.sizeof(MONITORINFO))
     success = user32.GetMonitorInfoW(hMonitor, ctypes.byref(info))
     if not success:
         raise RuntimeError("Failed to get monitor info")
 
-    return info.rcWork
+    return info
 
 # Ported from https://stackoverflow.com/a/21767578
 class MainWindowData(ctypes.Structure):
@@ -221,7 +242,7 @@ class MainWindowData(ctypes.Structure):
         ('hWnd', DWORD),
     ]
 
-WNDENUMPROC = ctypes.WINFUNCTYPE(BOOL, DWORD, ctypes.POINTER(ctypes.c_void_p))
+WNDENUMPROC = ctypes.WINFUNCTYPE(BOOL, DWORD, ctypes.c_void_p)
 
 def find_main_window(pid, tries):
     data = MainWindowData(pid, 0)
@@ -300,13 +321,17 @@ def ensure_not_maximized(hWnd):
     if window_placement.showCmd == SW_MAXIMIZE:
         user32.SendMessageW(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0)
 
-def move_window(pid, instance_index, rows, cols):
+def move_window(pid, instance_index, monitor, rows, cols):
     hWnd = find_main_window(pid, 20)
     if not hWnd:
         raise RuntimeError("Unable to find Factorio window")
 
     ensure_not_maximized(hWnd)
-    rcWork = get_monitor_work_area(hWnd)
+    if monitor is None:
+        hMonitor = user32.MonitorFromWindow(hWnd, MONITOR_DEFAULTTOPRIMARY)
+    else:
+        hMonitor = get_monitor_handle(monitor)
+    rcWork = get_monitor_info(hMonitor).rcWork
     width = (rcWork.right - rcWork.left) // cols
     height = (rcWork.bottom - rcWork.top) // rows
     right = rcWork.right - (((instance_index - 1) // rows + 1) * width)
