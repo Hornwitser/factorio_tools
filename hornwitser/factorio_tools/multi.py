@@ -339,44 +339,22 @@ def move_window(pid, instance_index, monitor, rows, cols):
 
     user32.MoveWindow(hWnd, right, top, width, height, False)
 
-SM_XVIRTUALSCREEN = 76
-SM_YVIRTUALSCREEN = 77
-SM_CXVIRTUALSCREEN = 78
-SM_CYVIRTUALSCREEN = 79
 
-Size = collections.namedtuple('Size', 'x y width height')
-virtual_size = None
-
-def get_virtual_size():
-    return Size(
-        user32.GetSystemMetrics(SM_XVIRTUALSCREEN),
-        user32.GetSystemMetrics(SM_YVIRTUALSCREEN),
-        user32.GetSystemMetrics(SM_CXVIRTUALSCREEN),
-        user32.GetSystemMetrics(SM_CYVIRTUALSCREEN)
-    )
-
-def to_virtual(x, y):
-    global virtual_size
-    if not virtual_size:
-        virtual_size = get_virtual_size()
-
-    x = (x - virtual_size.x) * (2**16 - 1) // virtual_size.width
-    y = (y - virtual_size.y) * (2**16 - 1) // virtual_size.height
-    return x, y
-
-def click_window(hWnd, x, y):
+def window_to_virtual(hWnd, x, y):
     rect = RECT()
     if not user32.GetWindowRect(hWnd, ctypes.byref(rect)):
         raise RuntimeError("Unable to get size of window")
+    return x + rect.left, y + rect.top
 
+def click_window(hWnd, x, y):
     flags = (
-        MOUSEEVENTF_MOVE
-        | MOUSEEVENTF_LEFTDOWN
+        MOUSEEVENTF_LEFTDOWN
         | MOUSEEVENTF_LEFTUP
-        | MOUSEEVENTF_ABSOLUTE
     )
-    x, y = to_virtual(rect.left + x, rect.top + y)
-    mi = MOUSEINPUT(x, y, 0, flags, 0, None)
+    x, y = window_to_virtual(hWnd, x, y)
+    user32.SetCursorPos(x, y)
+    user32.SetCursorPos(x, y) # Make sure it actually moves
+    mi = MOUSEINPUT(0, 0, 0, flags, 0, None)
     input = INPUT(INPUT_MOUSE, mi=mi)
     user32.SendInput(1, ctypes.byref(input), ctypes.sizeof(INPUT))
 
