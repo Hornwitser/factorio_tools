@@ -121,5 +121,9 @@ def multi_parser(subparsers):
     parser_click.add_argument('y', type=int, help="y coordinate")
     parser_click.set_defaults(func=multi.click)
 
+    parser_type = subparsers.add_parser('type', help="Type keys on all clients")
+    parser_type.add_argument("keys", type=str, nargs='+', help="keys to input")
+    parser_type.set_defaults(func=multi.key)
+
 if __name__ == '__main__':
     main()

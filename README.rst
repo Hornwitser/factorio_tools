@@ -175,3 +175,16 @@ and clicks on the given x, y coordinate on every window who's title
 starts with "Factorio".  Taking a screenshot of one of the Factorio
 windows with Alt+PrtScn and then pasting it into MS Paint is useful
 to figure out what coordinate a button is on.
+
+There's also a ``type`` tool that does keyboard input on each window
+and is invoked like this
+
+.. code ::
+
+    > py -m hornwitser.factorio_tools multi type control-v backspace enter
+
+Separate each keypress with a space and ``-`` to combine multiple keys
+into one stroke. For a list of recognized keys see the `virtual key
+codes`_ table.
+
+.. _virtual key codes: https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
