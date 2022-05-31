@@ -95,7 +95,8 @@ do the following steps:
     the write directories for all of the client instances.  If you place
     this new directory inside the Factorio installation directory then
     the Factorio executable will be auto detected, otherwise you will
-    need to pass it with the ``--factorio`` when spawning instances.
+    need to pass it with the ``--factorio`` when spawning instances or
+    by setting the FACTORIO environment variable to the path to the exe.
 
 2.  Generate a base write dir for the instances to be based on.
 
