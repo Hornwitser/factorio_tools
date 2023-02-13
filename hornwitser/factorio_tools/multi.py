@@ -83,7 +83,7 @@ def generate_instances(args):
 
 def find_factorio():
     """Look for the factorio executable"""
-    if os.environ["FACTORIO"]:
+    if "FACTORIO" in os.environ:
         return os.environ["FACTORIO"]
 
     dir = os.getcwd()
