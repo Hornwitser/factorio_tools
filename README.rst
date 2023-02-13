@@ -15,6 +15,9 @@ Factorio Tools is available on PyPi, you can install/update it using the
 
     > py -m pip install --user --upgrade hornwitser.factorio_tools
 
+.. note ::
+
+    Python 3.7 or higher is required to install and run this package.
 
 desync tool
 -----------
