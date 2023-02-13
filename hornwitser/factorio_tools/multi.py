@@ -23,6 +23,7 @@ import configparser
 import ctypes
 import json
 import os
+import platform
 import re
 import shutil
 import subprocess
@@ -349,10 +350,17 @@ def move_window(pid, instance_index, monitor, rows, cols):
     rcWork = get_monitor_info(hMonitor).rcWork
     width = (rcWork.right - rcWork.left) // cols
     height = (rcWork.bottom - rcWork.top) // rows
-    right = rcWork.right - (((instance_index - 1) // rows + 1) * width)
+    left = rcWork.right - (((instance_index - 1) // rows + 1) * width)
     top = rcWork.top + ((instance_index - 1) % rows * height)
 
-    user32.MoveWindow(hWnd, right, top, width, height, False)
+    # No idea why, but this produced thighly spaced windows on Windows 7
+    # but left 7 pixel borders 10.
+    if platform.release() == '10':
+        height += 7
+        left -= 7
+        width += 14
+
+    user32.MoveWindow(hWnd, left, top, width, height, False)
 
 
 def window_to_virtual(hWnd, x, y):
