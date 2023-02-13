@@ -245,6 +245,16 @@ def diff_tagged_files(a_file, b_file):
         if a_chunk == b_chunk:
             continue
 
+        if a_chunk is None:
+            print()
+            print("add to end")
+            print("des:", b''.join(c.content for c in b_chunk))
+            continue
+        if b_chunk is None:
+            print("delete from end")
+            print("ref:", b''.join(c.content for c in a_chunk))
+            continue
+
         if max(len(a_chunk), len(b_chunk)) > 200000:
             print(f"diffing <{a_chunk[0].tag}> {len(a_chunk)}/{len(b_chunk)} tokens, this may take a long time")
 
@@ -253,10 +263,12 @@ def diff_tagged_files(a_file, b_file):
             if op == 'equal': continue
             print()
             print(f"{op:7}   ref[{i1}:{i2}] -> des[{j1}:{j2}]")
-            print(token_path(a_chunk[i1]))
-            print(f"ref: {b''.join(map(lambda t: t.content, a_chunk[i1:i2]))!r}")
-            print(token_path(b_chunk[j1]))
-            print(f"des: {b''.join(map(lambda t: t.content, b_chunk[j1:j2]))}")
+            if i1 != i2:
+                print(token_path(a_chunk[i1]))
+                print(f"ref: {b''.join(map(lambda t: t.content, a_chunk[i1:i2]))!r}")
+            if j1 != j2:
+                print(token_path(b_chunk[j1]))
+                print(f"des: {b''.join(map(lambda t: t.content, b_chunk[j1:j2]))}")
 
 def analyze(args):
     if args.path.endswith('.zip'):
