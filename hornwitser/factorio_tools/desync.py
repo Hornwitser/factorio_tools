@@ -57,8 +57,8 @@ class Token(collections.namedtuple('Token', 'kind content tag parent pos')):
 
 
 token_spec = [
-    (b'OPEN_TAG', br'<(?P<OPEN_TAG_NAME>[a-z-]+)( ([^\x00-\x1f<>\x80-\xff]|<[a-zA-Z]+>)*)?>'),
-    (b'CLOSE_TAG', br'</(?P<CLOSE_TAG_NAME>[a-z-]+)>'),
+    (b'OPEN_TAG', br'<(?P<OPEN_TAG_NAME>[a-z-]{2,})( ([^\x00-\x1f<>\x80-\xff]|<[a-zA-Z]+>)*)?>'),
+    (b'CLOSE_TAG', br'</(?P<CLOSE_TAG_NAME>[a-z-]{2,})>'),
 ]
 
 tag = re.compile(b'|'.join(b'(?P<%s>%s)' % pair for pair in token_spec))
