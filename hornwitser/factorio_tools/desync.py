@@ -277,8 +277,14 @@ def analyze(args):
         report.extractall(path.dirname(args.path))
         args.path = args.path[:-4]
 
-    ref_zip = zipfile.ZipFile(path.join(args.path, 'reference-level.zip'))
-    des_zip = zipfile.ZipFile(path.join(args.path, 'desynced-level.zip'))
+    if path.exists(path.join(args.path, 'server-level.zip')):
+        ref_path = path.join(args.path, 'server-level.zip')
+        des_path = path.join(args.path, 'client-level.zip')
+    else:
+        ref_path = path.join(args.path, 'reference-level.zip')
+        des_path = path.join(args.path, 'desynced-level.zip')
+    ref_zip = zipfile.ZipFile(ref_path)
+    des_zip = zipfile.ZipFile(des_path)
 
     ref_files = find_files(ref_zip)
     des_files = find_files(des_zip)
